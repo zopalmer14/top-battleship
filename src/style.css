@@ -51,14 +51,17 @@ table {
 	border-spacing: 0;
 }
 
-/* Variable Declaration */
+/* Base Styling */
 
 :root {
-    --white-accent: white;
-    --gray-accent: whitesmoke;
-}
+    --gray-accent: #ececec;
+	--darkgray-accent: #3b3b3b;
 
-/* Base Styling */
+	--first-accent: #9fd3c7;
+	--second-accent: #385170;
+	--third-accent: #142d4c;
+	--green-accent: #74992E;
+}
 
 body {
     font-size: 16px;
