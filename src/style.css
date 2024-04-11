@@ -63,7 +63,67 @@ table {
 	--green-accent: #74992E;
 }
 
-body {
+body, button {
     font-size: 16px;
     font-family: Garamond, sans-serif;
+}
+
+body {
+	padding: 2rem;
+}
+
+main {
+	display: flex;
+	justify-content: center;
+}
+
+/* Header Styling */
+
+header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+}
+
+header h1 {
+	color: var(--second-accent);
+	font-size: 2.5rem;
+	font-weight: bold;
+}
+
+header button {
+	color: var(--second-accent);
+	background-color: white;
+	padding: 0.5rem 1rem;
+	border: 1px solid var(--second-accent);
+	border-radius: 5px;
+	transition: 0.5s ease-in-out;
+}
+
+header button:hover {
+	color: white;
+	background-color: var(--second-accent);
+	cursor: pointer;
+}
+
+/* Battleship Board Styling */
+
+.board-grid {
+	margin-top: 2rem;
+	background-color: lightgray;
+	display: grid;
+	gap: 2px;
+}
+
+.board-grid .grid-space {
+	background-color: var(--second-accent);
+	height: 3rem;
+	width: 3rem;
+	transition: 0.25s ease-in-out;
+}
+
+.board-grid .grid-space:hover {
+	filter: brightness(0.8);
+	cursor: pointer;
 }
