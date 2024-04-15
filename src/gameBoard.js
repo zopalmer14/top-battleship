@@ -50,7 +50,27 @@ const createGameBoard = function createGameBoard(dimensions) {
     }
 
     const receiveAttack = function receiveAttack(row, col) {
-        return '';
+        // check that the attack is within the board bounds
+        if (row < dimensions && row >= 0 && col < dimensions && col >= 0) {
+            // grab the current value at the space
+            const currVal = board[row][col];
+
+            // check if a ship is there
+            if (currVal != '' && currVal != 'X') {
+                // iterate over the ships and call hit() on the appropriate one
+                for (let i = 0; i < ships.length; i+=1) {
+                    if (currVal === ships[i].callsign()) {
+                        ships[i].hit();
+                    }
+                }
+            }
+
+            // mark the space on the board with an 'X'
+            board[row][col] = 'X';
+        } else {
+            // return an error message otherwise
+            return 'Error: attack position outside of board bounds';
+        }
     }
 
     return {

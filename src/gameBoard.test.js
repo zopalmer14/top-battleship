@@ -92,7 +92,6 @@ test('if (0, 0) receives an attack the board should contain an "X" at (0, 0)', (
     expect(board[0][0]).toBe('X');
 });
 
-// tests for the receiveAttack(row, col) function
 test('if a ship is at (0, 0) and an attack is received here the ship should take damage', () => {
     // setup
     const testBoard = gameBoard.createGameBoard(8);
@@ -103,4 +102,14 @@ test('if a ship is at (0, 0) and an attack is received here the ship should take
     const actual = testShip.damage();
 
     expect(actual).toBe(1);
+});
+
+test('if an attack is received outside of the board bounds, an error message should be returned', () => {
+    // setup
+    const testBoard = gameBoard.createGameBoard(8);
+
+    const result = testBoard.receiveAttack(-1, 0);
+    const errorMessage = 'Error: attack position outside of board bounds';
+
+    expect(result).toBe(errorMessage); 
 });
