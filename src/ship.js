@@ -1,20 +1,22 @@
 
 // Ship Factory
-const createShip = function createShip(length) {
+const createShip = function createShip(name, len) {
     let timesHit = 0;
 
     // getters 
-    const shipDamage = () => timesHit;
-    const shipLength = () => length;
+    const callsign = () => name;
+    const damage = () => timesHit;
+    const length = () => len;
 
     // setters 
     const hit = () => {timesHit += 1};
 
-    const isSunk = () => timesHit >= length;
+    const isSunk = () => timesHit >= len;
 
-    return {  
-        shipDamage, 
-        shipLength,
+    return { 
+        callsign,
+        damage, 
+        length,
         hit,
         isSunk,
     }
