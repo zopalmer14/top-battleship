@@ -49,10 +49,15 @@ const createGameBoard = function createGameBoard(dimensions) {
         }
     }
 
+    const receiveAttack = function receiveAttack(row, col) {
+        return '';
+    }
+
     return {
         getShips,
         getBoard,
         placeShip,
+        receiveAttack,
     }
 };
 

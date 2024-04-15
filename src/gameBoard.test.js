@@ -9,6 +9,7 @@ const Ship = require('./ship');
 // - getShips()
 // - getBoard()
 // - placeShip(ship, row, col, isVert)
+// - receiveAttack(row, col)
 
 // test for the getShips() function
 test('a new board should have no ships (empty array)', () => {
@@ -76,7 +77,30 @@ test('if a ship is placed in an invalid location it should not be added and an e
 
     const result = testBoard.placeShip(testShip, 7, 7, true);
     const errorMessage = 'Error: invalid position, ship does not fit within board dimensions';
-    
+
     expect(testBoard.getShips().includes(testShip)).toBeFalsy();
     expect(result).toBe(errorMessage); 
+});
+
+// tests for the receiveAttack(row, col) function
+test('if (0, 0) receives an attack the board should contain an "X" at (0, 0)', () => {
+    // setup
+    const testBoard = gameBoard.createGameBoard(8);
+    testBoard.receiveAttack(0, 0);
+
+    const board = testBoard.getBoard();
+    expect(board[0][0]).toBe('X');
+});
+
+// tests for the receiveAttack(row, col) function
+test('if a ship is at (0, 0) and an attack is received here the ship should take damage', () => {
+    // setup
+    const testBoard = gameBoard.createGameBoard(8);
+    const testShip = Ship.createShip('Sub', 3);
+    testBoard.placeShip(testShip, 0, 0, false);
+
+    testBoard.receiveAttack(0, 0);
+    const actual = testShip.damage();
+
+    expect(actual).toBe(1);
 });
