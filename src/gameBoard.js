@@ -25,11 +25,28 @@ const createGameBoard = function createGameBoard(dimensions) {
     }
 
     // place a ship on the board
-    const placeShip = function placeShip(ship, row, col) {
-        // add the ship to the board's ship list
-        ships.push(ship);
+    const placeShip = function placeShip(ship, row, col, isVert) {
+        // determine the bounds to check based on the ship direction
+        const start = isVert ? row : col
+        const end = start + ship.length();
 
-        return '';
+        // check that the ship fits
+        if (end < dimensions) {
+            // mark the appropriate spaces on the board with the ship's callsign
+            for (let pos = start; pos <= end; pos+=1) {
+                if (isVert) {
+                    board[pos][col] = ship.callsign();
+                } else {
+                    board[row][pos] = ship.callsign();
+                }
+            }
+
+            // add the ship to the board's ship list
+            ships.push(ship);
+        } else {
+            // return an error message otherwise
+            return 'Error: invalid position, ship does not fit within board dimensions';
+        }
     }
 
     return {
