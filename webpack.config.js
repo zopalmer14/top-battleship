@@ -1,7 +1,10 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
+// imports 
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+// exports
+export default {
   mode: 'development',
   entry: './src/index.js',
   devtool: 'inline-source-map',
@@ -15,7 +18,7 @@ module.exports = {
   ],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve('dist'),
     clean: true,
   },
   module: {
