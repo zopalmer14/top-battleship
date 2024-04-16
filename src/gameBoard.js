@@ -73,11 +73,17 @@ const createGameBoard = function createGameBoard(dimensions) {
         }
     }
 
+    // returns whether or not all of the ships on the Gameboard have been sunk
+    const anyShipsRemaining = function anyShipsRemaining() {
+        return ships.some((ship) => !ship.isSunk());
+    };
+
     return {
         getShips,
         getBoard,
         placeShip,
         receiveAttack,
+        anyShipsRemaining,
     }
 };
 

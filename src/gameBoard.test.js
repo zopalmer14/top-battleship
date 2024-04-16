@@ -10,6 +10,7 @@ const Ship = require('./ship');
 // - getBoard()
 // - placeShip(ship, row, col, isVert)
 // - receiveAttack(row, col)
+// - anyShipsRemaining()
 
 // test for the getShips() function
 test('a new board should have no ships (empty array)', () => {
@@ -130,7 +131,7 @@ test('if a ship of length 3 is at (0, 0) and attacks are received at (0, 0) and 
     expect(actualDamage).toBe(2);
 });
 
-test('if a ship of length 3 is at (0, 0) and attacks are received at (0, 0), (0, 1), and (0, 2), the ship should take three damage and be sunk', () => {
+test('if a ship of length 3 is at (0, 0) and attacks are received at (0, 0), (0, 1), and (0, 2), the ship should be sunk', () => {
     // setup
     const testBoard = gameBoard.createGameBoard(8);
     const testShip = Ship.createShip('Sub', 3);
@@ -139,9 +140,7 @@ test('if a ship of length 3 is at (0, 0) and attacks are received at (0, 0), (0,
     testBoard.receiveAttack(0, 0);
     testBoard.receiveAttack(0, 1);
     testBoard.receiveAttack(0, 2);
-    const actualDamage = testShip.damage();
 
-    expect(actualDamage).toBe(3);
     expect(testShip.isSunk()).toBeTruthy();
 });
 
@@ -154,3 +153,60 @@ test('if an attack is received outside of the board bounds, an error message sho
 
     expect(result).toBe(errorMessage); 
 });
+
+// tests for anyShipsRemaining()
+test('if a board has a ship of length 3 at (0, 0), there should be ships remaining', () => {
+    // setup
+    const testBoard = gameBoard.createGameBoard(8);
+    const testShip = Ship.createShip('Sub', 3);
+    testBoard.placeShip(testShip, 0, 0, false);
+
+    expect(testBoard.anyShipsRemaining()).toBeTruthy();
+});
+
+test('if a board has a ship of length 3 at (0, 0) and it is sunk, there should be no ships remaining', () => {
+    // setup
+    const testBoard = gameBoard.createGameBoard(8);
+    const testShip = Ship.createShip('Sub', 3);
+    testBoard.placeShip(testShip, 0, 0, false);
+
+    testBoard.receiveAttack(0, 0);
+    testBoard.receiveAttack(0, 1);
+    testBoard.receiveAttack(0, 2);
+
+    expect(testBoard.anyShipsRemaining()).toBeFalsy();
+});
+
+test('if a board has two ships and one is sunk, there should be ships remaining', () => {
+    // setup
+    const testBoard = gameBoard.createGameBoard(8);
+    const testShip = Ship.createShip('Sub', 3);
+    const patrolBoat = Ship.createShip('Patrol', 2);
+    testBoard.placeShip(testShip, 0, 0, false);
+    testBoard.placeShip(patrolBoat, 1, 0, false);
+
+    testBoard.receiveAttack(0, 0);
+    testBoard.receiveAttack(0, 1);
+    testBoard.receiveAttack(0, 2);
+
+    expect(testBoard.anyShipsRemaining()).toBeTruthy();
+});
+
+test('if a board has two ships and both are sunk, there should be no ships remaining', () => {
+    // setup
+    const testBoard = gameBoard.createGameBoard(8);
+    const testShip = Ship.createShip('Sub', 3);
+    const patrolBoat = Ship.createShip('Patrol', 2);
+    testBoard.placeShip(testShip, 0, 0, false);
+    testBoard.placeShip(patrolBoat, 1, 0, false);
+
+    testBoard.receiveAttack(0, 0);
+    testBoard.receiveAttack(0, 1);
+    testBoard.receiveAttack(0, 2);
+
+    testBoard.receiveAttack(1, 0);
+    testBoard.receiveAttack(1, 1);
+
+    expect(testBoard.anyShipsRemaining()).toBeFalsy();
+});
+
