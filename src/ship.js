@@ -23,6 +23,6 @@ const createShip = function createShip(name, len) {
 }
 
 // exports
-module.exports = {
+export {
     createShip,
 };

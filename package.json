@@ -1,12 +1,16 @@
 {
   "name": "template-repo",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build": "webpack",
     "start": "webpack serve --open"
+  },
+  "jest": {
+    "transform": {}
   },
   "author": "Zach Palmer",
   "license": "ISC",

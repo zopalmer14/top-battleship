@@ -1,10 +1,12 @@
 
 // import in the gameBoard factory
-const gameBoard = require('./gameBoard');
+import {
+    createGameBoard,
+} from './gameBoard';
 
 // Player object factory function
 const createPlayer = function createPlayer(isComputer) {
-    const playerBoard = gameBoard.createGameBoard(8);
+    const playerBoard = createGameBoard(8);
 
     // getters
     const type = () => isComputer ? 'Computer' : 'User';
@@ -16,6 +18,6 @@ const createPlayer = function createPlayer(isComputer) {
     }
 };
 
-module.exports = {
+export {
     createPlayer,
 };

@@ -1,7 +1,4 @@
 
-// import in the Ship factory
-const Ship = require('./ship');
-
 // gameBoard factory function
 const createGameBoard = function createGameBoard(dimensions) {
     // member variables
@@ -87,6 +84,6 @@ const createGameBoard = function createGameBoard(dimensions) {
     }
 };
 
-module.exports = {
+export {
     createGameBoard,
 };
