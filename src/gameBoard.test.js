@@ -99,9 +99,50 @@ test('if a ship is at (0, 0) and an attack is received here the ship should take
     testBoard.placeShip(testShip, 0, 0, false);
 
     testBoard.receiveAttack(0, 0);
-    const actual = testShip.damage();
+    const actualDamage = testShip.damage();
 
-    expect(actual).toBe(1);
+    expect(actualDamage).toBe(1);
+});
+
+test('if a ship is at (0, 0) and two attacks are received here the ship should only take one damage', () => {
+    // setup
+    const testBoard = gameBoard.createGameBoard(8);
+    const testShip = Ship.createShip('Sub', 3);
+    testBoard.placeShip(testShip, 0, 0, false);
+
+    testBoard.receiveAttack(0, 0);
+    testBoard.receiveAttack(0, 0);
+    const actualDamage = testShip.damage();
+
+    expect(actualDamage).toBe(1);
+});
+
+test('if a ship of length 3 is at (0, 0) and attacks are received at (0, 0) and (0, 1), the ship should take two damage', () => {
+    // setup
+    const testBoard = gameBoard.createGameBoard(8);
+    const testShip = Ship.createShip('Sub', 3);
+    testBoard.placeShip(testShip, 0, 0, false);
+
+    testBoard.receiveAttack(0, 0);
+    testBoard.receiveAttack(0, 1);
+    const actualDamage = testShip.damage();
+
+    expect(actualDamage).toBe(2);
+});
+
+test('if a ship of length 3 is at (0, 0) and attacks are received at (0, 0), (0, 1), and (0, 2), the ship should take three damage and be sunk', () => {
+    // setup
+    const testBoard = gameBoard.createGameBoard(8);
+    const testShip = Ship.createShip('Sub', 3);
+    testBoard.placeShip(testShip, 0, 0, false);
+
+    testBoard.receiveAttack(0, 0);
+    testBoard.receiveAttack(0, 1);
+    testBoard.receiveAttack(0, 2);
+    const actualDamage = testShip.damage();
+
+    expect(actualDamage).toBe(3);
+    expect(testShip.isSunk()).toBeTruthy();
 });
 
 test('if an attack is received outside of the board bounds, an error message should be returned', () => {
