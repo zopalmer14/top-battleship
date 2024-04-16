@@ -209,4 +209,3 @@ test('if a board has two ships and both are sunk, there should be no ships remai
 
     expect(testBoard.anyShipsRemaining()).toBeFalsy();
 });
-
