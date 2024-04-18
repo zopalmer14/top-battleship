@@ -4,18 +4,23 @@ import './style.css';
 
 // import functions from other JS modules
 import {
-    setupGameBoard,
+    displayGameBoard,
 } from './domController.js';
 
 import { createPlayer } from './player.js';
 
-import { createShip } from './ship.js';
-
 const BOARD_SIZE = 10;
 
 const pageInterface = function pageInterface() {
+    // player references
     let P1;
     const CPU = createPlayer('CPU', true);
+    let activePlayer = CPU;
+
+    // DOM referencs
+    const playerDOMBoard = document.querySelector('#P1');
+    const cpuDOMBoard = document.querySelector('#CPU');
+    let activeDOMBoard = cpuDOMBoard;
 
     const initalizePage = function initalizePage() {
         // To initialize the page . . . 
@@ -39,40 +44,68 @@ const pageInterface = function pageInterface() {
         startGameForm.addEventListener('submit', (event) => {
             // create a new Player with the form info
             P1 = createPlayer(event.target.playerName.value, false);
-            console.log(P1);
 
-            // create two boards in the DOM -- one for the user and one for the CPU
-            setupGameBoard(BOARD_SIZE);
-            setupGameBoard(BOARD_SIZE);
+            // get the player gameBoards
+            const playerGameBoard = P1.getPlayerBoard();
+            const cpuGameBoard = CPU.getPlayerBoard();
+
+            // show the game boards in the front-end
+            playerDOMBoard.classList.remove('hidden');
+            cpuDOMBoard.classList.remove('hidden');
+
+            // update the two boards in the DOM with the back-end data
+            displayGameBoard(playerDOMBoard, playerGameBoard.getBoard(), clickSpace, BOARD_SIZE);
+            displayGameBoard(cpuDOMBoard, cpuGameBoard.getBoard(), clickSpace, BOARD_SIZE);
 
             // setup the boards in the default positions
-            defaultShipPlacements(P1.getPlayerBoard());
-            defaultShipPlacements(CPU.getPlayerBoard());
+            playerGameBoard.defaultShipPlacements();
+            cpuGameBoard.defaultShipPlacements();
 
             // reset the form inputs
             startGameForm.reset(); 
         });
     }
 
-    // helper / debug function that automatically sets up the default ship positions for the given board
-    function defaultShipPlacements(board) {
-        // default ships
-        const battleship = createShip('Battleship', 5);
-        const cruiser = createShip('Cruiser', 4);
-        const sub = createShip('Sub', 3);
-        const patrolBoat = createShip('Patrol Boat', 2);
+    // switches the active board in the front and back end
+    function switchActive() {
+        // switch the active player
+        activePlayer = (activePlayer === CPU) ? P1 : CPU;
 
-        // battleship from (0, 0) to (0, 4)
-        board.placeShip(battleship, 0, 0, false);
+        // remove 'active' status from the current active DOM board
+        activeDOMBoard.classList.remove('active');
 
-        // cruiser from (6, 9) to (9, 9)
-        board.placeShip(cruiser, 6, 9, true);
+        // switch the active DOM board
+        activeDOMBoard = (activeDOMBoard === cpuDOMBoard) ? playerDOMBoard : cpuDOMBoard;
 
-        // sub from (0, 7) to (0, 9)
-        board.placeShip(sub, 0, 7, false);
+        // add 'active' status to the newly active DOM board
+        activeDOMBoard.classList.add('active');
+    }
 
-        // patrol boat from (8, 0) to (9, 0)
-        board.placeShip(patrolBoat, 8, 0, true);
+    // eventListener function that reacts to a grid space being clicked 
+    function clickSpace(event) {
+        const boardSpace = event.target;
+        const boardGrid = boardSpace.parentNode;
+
+        // only valid if the board is 'active'
+        if (boardGrid.classList.contains('active')) {
+            console.log(boardGrid);
+            console.log(boardSpace);
+
+            // send an attack to the active game board
+            const activeGameBoard = activePlayer.getPlayerBoard();
+            activeGameBoard.receiveAttack(boardSpace.dataset.row, boardSpace.dataset.col);
+
+            // re-render the active board to reflect the change
+            displayGameBoard (
+                activeDOMBoard, 
+                activeGameBoard.getBoard(), 
+                clickSpace, 
+                BOARD_SIZE
+            );
+
+            // switch the active player and DOM board
+            switchActive();
+        }
     }
     
     return {

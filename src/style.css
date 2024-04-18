@@ -195,14 +195,24 @@ header button:focus {
 	gap: 2px;
 }
 
+.board-grid.hidden {
+	display: none;
+}
+
 .board-grid .grid-space {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	font-size: 2rem;
 	background-color: var(--second-accent);
 	height: 3rem;
 	width: 3rem;
+	
 	transition: 0.25s ease-in-out;
 }
 
-.board-grid .grid-space:hover {
+.board-grid.active .grid-space:hover {
 	filter: brightness(0.8);
 	cursor: pointer;
 }

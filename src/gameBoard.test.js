@@ -97,6 +97,17 @@ test('if (0, 0) receives an attack the board should contain an "X" at (0, 0)', (
     expect(board[0][0]).toBe('X');
 });
 
+test('if a ship is at (0, 0) and an attack is received there, the board should contain an "O" at (0, 0)', () => {
+    // setup
+    const testBoard = createGameBoard(8);
+    const testShip = createShip('Sub', 3);
+    testBoard.placeShip(testShip, 0, 0, false);
+    testBoard.receiveAttack(0, 0);
+
+    const board = testBoard.getBoard();
+    expect(board[0][0]).toBe('O');
+});
+
 test('if a ship is at (0, 0) and an attack is received here the ship should take damage', () => {
     // setup
     const testBoard = createGameBoard(8);
